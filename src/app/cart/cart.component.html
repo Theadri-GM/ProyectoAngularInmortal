@@ -1,0 +1,58 @@
+<h3>Cart</h3>
+
+<p>
+  <a routerLink="/shipping">Shipping Prices</a>
+</p>
+
+<div class="cart-item" *ngFor="let item of items; let i = index">
+  <span>{{ item.title }}</span>
+  <span>{{ item.price | currency }}</span>
+  <span
+    ><button type="button" class="btn btn-danger" (click)="borrarProducto(i)">
+      delete
+    </button></span
+  >
+</div>
+
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" required />
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="fill">
+      <mat-label>Dirección</mat-label>
+      <textarea matInput formControlName="address" required></textarea>
+      <mat-error *ngIf="checkoutForm.get('address')?.hasError('minLength')">
+        La longitud debe tener al menos 8 caracteres
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-radio-group formControlName="metodoDePago">
+      <mat-radio-button value="tarjetaDeCredito"
+        >Tarjeta de crédito</mat-radio-button
+      >
+      <mat-radio-button value="bizum">Bizum</mat-radio-button>
+      <mat-radio-button value="contraReembolso"
+        >Contra Reembolso</mat-radio-button
+      >
+    </mat-radio-group>
+  </div>
+  <div>
+    <mat-checkbox formControlName="terminosYCondiciones" required>
+      I agree to the terms and conditions
+    </mat-checkbox>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="checkoutForm.invalid"
+  >
+    Purchase
+  </button>
+</form>
